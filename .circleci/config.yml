@@ -1,0 +1,23 @@
+version: 2.1
+orbs:
+  node: circleci/node@2.0.2
+
+node-orb-executor: &NODE_ORB_EXECUTOR
+  executor:
+    name: node/default
+    tag: '13.13.0'
+
+jobs:
+  unit-test:
+    <<: *NODE_ORB_EXECUTOR
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: yarn
+          cache-key: yarn.lock
+      - run: yarn test
+
+workflows:
+  unit_test:
+    jobs:
+      - unit-test
